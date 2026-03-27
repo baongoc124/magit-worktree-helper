@@ -120,10 +120,11 @@ FILE is a path relative to the repo root."
     (let* ((src (expand-file-name file source-root))
            (dst (expand-file-name file target-root))
            (dst-dir (file-name-directory dst)))
-      (make-directory dst-dir t)
-      (if (file-directory-p src)
-          (copy-directory src dst nil t t)
-        (copy-file src dst t)))))
+      (when (file-exists-p src)
+        (make-directory dst-dir t)
+        (if (file-directory-p src)
+            (copy-directory src dst nil t t)
+          (copy-file src dst t))))))
 
 (defun magit-worktree-helper--do-copy (source-root target-root)
   "Copy selected untracked files from SOURCE-ROOT to TARGET-ROOT."
