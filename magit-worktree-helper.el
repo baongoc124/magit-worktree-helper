@@ -6,7 +6,7 @@
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "27.1") (magit "3.0.0"))
 ;; Keywords: vc tools
-;; URL: https://github.com/ngoc/magit-worktree-helper
+;; URL: https://github.com/baongoc124/magit-worktree-helper
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 

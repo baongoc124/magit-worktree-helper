@@ -1,0 +1,44 @@
+#+title: magit-worktree-helper
+
+Automatically copy untracked files (.env, language server configs, etc.) to new git worktrees created via Magit.
+
+* Installation
+
+Requires Emacs 30+.
+
+#+begin_src emacs-lisp
+(use-package magit-worktree-helper
+  :vc (:url "https://github.com/baongoc124/magit-worktree-helper.git"
+       :rev :newest)
+  :after magit
+  :config
+  (magit-worktree-helper-mode 1))
+#+end_src
+
+* Configuration
+
+All options can be overridden per-project via =.dir-locals.el=.
+
+| Variable                                       | Default                    | Description                                          |
+|------------------------------------------------+----------------------------+------------------------------------------------------|
+| =magit-worktree-helper-copy-all=               | =t=                        | Copy all untracked files (not just include patterns)  |
+| =magit-worktree-helper-include=                | =(".env")=                 | Patterns to copy when =copy-all= is nil              |
+| =magit-worktree-helper-exclude=                | =("node_modules" ".venv")= | Patterns to never copy (always applied)              |
+| =magit-worktree-helper-include-ignored=        | =t=                        | Include gitignored files as candidates               |
+| =magit-worktree-helper-confirm=                | =nil=                      | Prompt before copying                                |
+| =magit-worktree-helper-after-copy-functions=   | =(switch-project)=         | Hook run after copy (each fn receives target dir)    |
+
+Patterns match by path prefix (=config/= matches =config/local.yml=) or by exact basename (=.env= matches =subdir/.env=).
+
+* Example: only copy specific files
+
+#+begin_src emacs-lisp
+(setq magit-worktree-helper-copy-all nil)
+(setq magit-worktree-helper-include '(".env" ".envrc" "pyrightconfig.json"))
+#+end_src
+
+* Per-project override via .dir-locals.el
+
+#+begin_src emacs-lisp
+((nil . ((magit-worktree-helper-exclude . ("node_modules" ".venv" "dist")))))
+#+end_src
