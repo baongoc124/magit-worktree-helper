@@ -149,13 +149,16 @@ FILE is a path relative to the repo root."
 (defun magit-worktree-helper--around-create (orig-fn &rest args)
   "Advice around worktree creation to copy untracked files.
 Captures source toplevel before ORIG-FN changes `default-directory'."
-  (let ((source-root (magit-toplevel)))
+  (let ((source-root (magit-toplevel))
+        (source-buf (current-buffer)))
     (apply orig-fn args)
     (let ((target-root (expand-file-name (car args))))
       (when (and source-root (file-directory-p target-root))
-        (magit-worktree-helper--do-copy source-root target-root)
-        (run-hook-with-args 'magit-worktree-helper-after-copy-functions
-                            target-root)))))
+        ;; Run in original buffer so dir-local variable overrides are visible.
+        (with-current-buffer source-buf
+          (magit-worktree-helper--do-copy source-root target-root)
+          (run-hook-with-args 'magit-worktree-helper-after-copy-functions
+                              target-root))))))
 
 (defun magit-worktree-helper-switch-project (target-root)
   "Switch to TARGET-ROOT using `project-switch-project'."
