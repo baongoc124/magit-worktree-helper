@@ -81,6 +81,12 @@ copied to new worktrees."
   "Whether to prompt before copying files to a new worktree."
   :type 'boolean)
 
+(defcustom magit-worktree-helper-after-copy-functions
+  '(magit-worktree-helper-switch-project)
+  "Functions to run after copying files to a new worktree.
+Each function receives TARGET-ROOT as its single argument."
+  :type 'hook)
+
 (put 'magit-worktree-helper-copy-all 'safe-local-variable #'booleanp)
 (put 'magit-worktree-helper-include 'safe-local-variable #'listp)
 (put 'magit-worktree-helper-exclude 'safe-local-variable #'listp)
@@ -147,7 +153,17 @@ Captures source toplevel before ORIG-FN changes `default-directory'."
     (apply orig-fn args)
     (let ((target-root (expand-file-name (car args))))
       (when (and source-root (file-directory-p target-root))
-        (magit-worktree-helper--do-copy source-root target-root)))))
+        (magit-worktree-helper--do-copy source-root target-root)
+        (run-hook-with-args 'magit-worktree-helper-after-copy-functions
+                            target-root)))))
+
+(defun magit-worktree-helper-switch-project (target-root)
+  "Switch to TARGET-ROOT using `project-switch-project'."
+  (when-let ((pr (project-current nil target-root)))
+    (project-remember-project pr))
+  ;; (project-switch-project target-root)
+  ;; (envrc-allow)
+  )
 
 ;;; Mode
 
