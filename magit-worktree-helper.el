@@ -162,6 +162,7 @@ Captures source toplevel before ORIG-FN changes `default-directory'."
 
 (defun magit-worktree-helper-switch-project (target-root)
   "Switch to TARGET-ROOT using `project-switch-project'."
+  (project-forget-zombie-projects)
   (when-let ((pr (project-current nil target-root)))
     (project-remember-project pr))
   ;; (project-switch-project target-root)
