@@ -21,8 +21,8 @@ All options can be overridden per-project via =.dir-locals.el=.
 
 | Variable                                       | Default                    | Description                                          |
 |------------------------------------------------+----------------------------+------------------------------------------------------|
-| =magit-worktree-helper-copy-all=               | =t=                        | Copy all untracked files (not just include patterns)  |
-| =magit-worktree-helper-include=                | =(".env")=                 | Patterns to copy when =copy-all= is nil              |
+| =magit-worktree-helper-copy-all=               | =nil=                      | Copy all untracked files (not just include patterns)  |
+| =magit-worktree-helper-include=                | =(".dir-locals.el" ".envrc" "pyrightconfig.json")= | Patterns to copy when =copy-all= is nil              |
 | =magit-worktree-helper-exclude=                | =("node_modules" ".venv")= | Patterns to never copy (always applied)              |
 | =magit-worktree-helper-include-ignored=        | =t=                        | Include gitignored files as candidates               |
 | =magit-worktree-helper-confirm=                | =nil=                      | Prompt before copying                                |

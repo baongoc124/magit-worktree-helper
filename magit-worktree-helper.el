@@ -55,13 +55,13 @@
   :group 'magit
   :prefix "magit-worktree-helper-")
 
-(defcustom magit-worktree-helper-copy-all t
+(defcustom magit-worktree-helper-copy-all nil
   "When non-nil, all untracked files are candidates for copying.
 When nil, only files matching `magit-worktree-helper-include' are copied.
 In both cases, `magit-worktree-helper-exclude' is applied last."
   :type 'boolean)
 
-(defcustom magit-worktree-helper-include '(".env")
+(defcustom magit-worktree-helper-include '(".dir-locals.el" ".envrc" "pyrightconfig.json")
   "Patterns of files to copy when `magit-worktree-helper-copy-all' is nil.
 Each pattern matches if the file's relative path starts with it,
 or the file's base name equals it."
